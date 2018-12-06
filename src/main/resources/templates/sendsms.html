@@ -1,0 +1,164 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SMS Website</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sky-forms.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-cyan">
+
+<br>
+<br/>
+
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">SMS Platform Website</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/message/send}">Turn ON/OFF Hardware</a></li>
+            <li><a th:href="@{/aboutus}">About Us</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="body">
+    <div id="wrapper">
+
+
+        <form autocomplete="off" class="sky-form" th:object="${message}" method="post" th:action="@{/message/sendSMS}"
+              role="form">
+
+            <header> Message Details</header>
+
+            <div>
+                <fieldset>
+
+                    <input type="hidden" th:field="*{ids}"/>
+
+                    <!--<section>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col col-5">-->
+                                <!--<label class="input">-->
+                                    <!--<i class="icon-append icon-user"></i>-->
+                                    <!--<input type="text" id="to" name="to" th:field="*{to}"-->
+                                           <!--placeholder="Receiver phonenumber"/>-->
+                                    <!--<div th:if="${#fields.hasErrors('to')}" th:errors="*{to}">Title error message-->
+                                    <!--</div>-->
+                                <!--</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</section>-->
+
+                    <section>
+                        <div class="row">
+                            <div class="col col-5 ">
+                                <label class="input">
+                                    <i class="icon-append icon-user"></i>
+                                    <input type="text" id="txt" name="txt" th:field="*{txt}"
+                                           placeholder="Message"/>
+                                    <div th:if="${#fields.hasErrors('txt')}" th:errors="*{txt}">Title error message
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <div>
+                    <button type="submit" class="button" onclick="waitingDialog.show('Message is being sent', {dialogSize: 'sm', progressType: 'warning'});setTimeout(function () {waitingDialog.hide();}, 2000);">TURN ON/OFF</button>
+                    </div>
+
+                    <div>
+                        <a th:href="@{/}" class="buttonLeftCancel">Cancel</a>
+                    </div>
+                    </footer>
+
+                </fieldset>
+            </div>
+
+            <span th:utext="${successMessage}"></span>
+
+        </form>
+
+    </div>
+</div>
+<script>
+    /**
+     * Module for displaying "Waiting for..." dialog using Bootstrap
+     *
+     * @author Eugene Maslovich <ehpc@em42.ru>
+     */
+
+    var waitingDialog = waitingDialog || (function ($) {
+            'use strict';
+
+            // Creating modal dialog's DOM
+            var $dialog = $(
+                '<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+                '<div class="modal-dialog modal-m">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
+                '<div class="modal-body">' +
+                '<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
+                '</div>' +
+                '</div></div></div>');
+
+            return {
+                /**
+                 * Opens our dialog
+                 * @param message Custom message
+                 * @param options Custom options:
+                 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+                 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
+                 */
+                show: function (message, options) {
+                    // Assigning defaults
+                    if (typeof options === 'undefined') {
+                        options = {};
+                    }
+                    if (typeof message === 'undefined') {
+                        message = 'Loading';
+                    }
+                    var settings = $.extend({
+                        dialogSize: 'm',
+                        progressType: '',
+                        onHide: null // This callback runs after the dialog was hidden
+                    }, options);
+
+                    // Configuring dialog
+                    $dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
+                    $dialog.find('.progress-bar').attr('class', 'progress-bar');
+                    if (settings.progressType) {
+                        $dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
+                    }
+                    $dialog.find('h3').text(message);
+                    // Adding callbacks
+                    if (typeof settings.onHide === 'function') {
+                        $dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+                            settings.onHide.call($dialog);
+                        });
+                    }
+                    // Opening dialog
+                    $dialog.modal();
+                },
+                /**
+                 * Closes dialog
+                 */
+                hide: function () {
+                    $dialog.modal('hide');
+                }
+            };
+
+        })(jQuery);
+
+</script>
+</body>
+</html>

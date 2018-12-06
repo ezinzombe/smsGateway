@@ -1,0 +1,119 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Users List</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sky-forms.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.dataTables.min.css}"/>
+
+    <th:block th:include="fragments/header :: header"></th:block>
+
+</head>
+<body class="homeback">
+
+<br/>
+<br/>
+
+
+<div sec:authorize="hasAuthority('ADMIN')">
+
+    <div class="container" style="opacity: 0.80">
+        <div class="container-fluid">
+            <div class="panel panel-primary">
+                <div class="panel-heading">List of Users</div>
+                <table id="listOfUsers" cellspacing="0" width="100%">
+                    <br/>
+                    <span th:utext="${successMessage}" class="text-success"></span>
+                    <thead>
+                    <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td><a th:text="${user.name}"></a></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.email}">gwash</td>
+                        <td th:text="${user.isActive}">Yes</td>
+                        <td><a th:href="@{'/user/update/' + ${user.id}}" class="btn btn-warning">Update</a></h2></td>
+                        <td><a th:href="@{'/user/delete/' + ${user.id}}" class="btn btn-danger">Delete</a></h2></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div sec:authorize="hasAuthority('USER')">
+    <div class="container" style="opacity: 0.80">
+        <div class="container-fluid">
+            <div class="panel panel-primary">
+                <div class="panel-heading">List of Fuels Currently In Stock</div>
+
+
+                <table id="stockList" cellspacing="0" width="100%" >
+                    <br/>
+                    <span th:utext="${successMessage}" class="text-success"></span>
+                    <thead>
+                    <tr>
+                        <th scope="col">Fuel Name</th>
+                        <th scope="col">Formulation</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Fuel Route</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price ($/L)</th>
+                        <th scope="col">Available Mode Of Payments</th>
+                        <th scope="col">Edit </th>
+                        <th scope="col">Delete </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="stockDetail : ${stockDetailList}">
+                        <td th:text="${stockDetail.fuelName}"></td>
+                        <td th:text="${stockDetail.formulation}"></td>
+                        <td th:text="${stockDetail.productName}"></td>
+                        <td th:text="${stockDetail.drugRoute}"></td>
+                        <td th:text="${stockDetail.quantity}"></td>
+                        <td th:text="${stockDetail.price}"></td>
+                        <td th:text="${stockDetail.modeOfPayment}"></td>
+                        <td><a th:href="@{'/stockDetail/id/' + ${user.fuelStation.id}}">Update Stock</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</br>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+<script
+        src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"
+        crossorigin="anonymous"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#listOfUsers').DataTable();
+    });
+
+    $(document).ready(function () {
+        $('#fuelStationBeingSupervised').DataTable();
+    });
+</script>
+<div th:replace="fragments/footer :: footer"/>
+</html>

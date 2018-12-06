@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fuel Locator Repository</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sky-forms.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-cyan">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/><br/><br/>
+
+<div>
+    <div class="body body-s">
+
+        <div>
+
+            <form th:action="@{/login}" method="POST" class="sky-form">
+                <header>Login form</header>
+                <div>
+                    <fieldset>
+                        <section>
+                            <div class="row">
+                                <label class="col col-4">Email Address</label>
+                                <div class="col col-8">
+                                    <label class="input">
+                                        <i class="icon-append icon-user"></i>
+                                        <input type="text" id="email" name="email" th:placeholder="Email"/>
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section>
+                            <div class="row">
+                                <label class="col col-4">Password</label>
+                                <div class="col col-8">
+                                    <label class="input">
+                                        <i class="icon-append icon-lock"></i>
+                                        <input type="password" th:placeholder="Password"
+                                               id="password" name="password"/>
+                                        <div align="center" th:if="${param.error}">
+                                            <p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please
+                                                verify</p>
+                                        </div>
+                                    </label>
+                                    <div class="note"><a href="${contextPath}/forgetPassword">Forgot password?</a></div>
+                                </div>
+                            </div>
+                        </section>
+                    </fieldset>
+                </div>
+                <footer>
+                    <button class="button" name="Submit" value="Login" type="Submit" th:text="Login"></button>
+
+                    <a th:href="@{/}" class="buttonLeftCancel">Cancel</a>
+
+                </footer>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+</html>

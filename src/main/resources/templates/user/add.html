@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Fuel Repository</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sky-forms.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-cyan">
+<div class="body">
+    <div id="wrapper">
+
+        <br/>
+        <br/>
+
+        <form autocomplete="off" class="sky-form" method="post" th:object="${user}" th:action="@{/user/save}"
+              role="form">
+
+            <header sec:authorize="hasAuthority('ADMIN')"> Add user account</header>
+            <div>
+                <fieldset>
+
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <section>
+                        <div class="row">
+                            <div class="col col-11">
+                                <label class="input">
+                                    <i class="icon-append icon-user"></i>
+                                    <input type="text" id="name" name="name" th:field="*{name}"
+                                           placeholder="First Name"/>
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="row">
+                            <textarea rows="5" id="message" th:field="*{message}">
+                            </textarea>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="row">
+                            <div class="col col-8">
+                                <label class="input">
+                                    <i class="icon-append icon-user"></i>
+                                    <input type="text" id="fuelStationRegNumber" name="fuelStationRegNumber" th:field="*{fuelStationRegNumber}"
+                                           placeholder="FuelStation Registration Number"/>
+                                    <div th:if="${#fields.hasErrors('fuelStationRegNumber')}" th:errors="*{fuelStationRegNumber}"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="row">
+                            <div class="col col-11">
+                                <label class="input">
+                                    <i class="icon-append icon-user"></i>
+                                    <input type="text" id="fuelStationName" name="fuelStationName" th:field="*{fuelStationName}"
+                                           placeholder="FuelStation Name"/>
+                                    <div th:if="${#fields.hasErrors('fuelStationName')}" th:errors="*{fuelStationName}"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <div class="row">
+                        <section class="col col-11">
+                            <label class="input">Email address which you will use to login with
+                                <input type="text" th:field="*{email}" placeholder="Email"/>
+                                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </label>
+                        </section>
+                    </div>
+
+                    <div class="row" th:if="${id==null}">
+                        <section class="col col-11">
+                            <label class="input">
+                                <input type="password" th:field="*{password}" placeholder="Password"/>
+                            </label>
+                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                        </section>
+                    </div>
+
+
+                    <div sec:authorize="hasAuthority('ADMIN')" class="row">
+                        <div class="col col-11">
+                            <label class="validation-message">Choose FuelStation</label>
+                            <select class="form-control" th:field="*{fuelStation}">
+                                <!--<option value="">Select a FuelStation</option>-->
+                                <option th:each="fuelStation : ${fuelStationList}"
+                                        th:value="${{fuelStation}}"
+                                        th:text="${fuelStation.fuelStationName}">
+                                    Cinema
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div sec:authorize="hasAuthority('ADMIN')" class="row">
+                        <div class="col col-11">
+                            <label class="validation-message">Select Role</label>
+                            <select class="form-control" th:field="*{roles}">
+                                <option th:each="role : ${roleList}"
+                                        th:value="${{role}}"
+                                        th:text="${role.role}">
+                                    Cinema
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <footer>
+
+                        <div sec:authorize="hasAuthority('ADMIN')">
+                            <button type="submit" class="button">Add Account</button>
+                        </div>
+
+                        <div>
+                            <a th:href="@{/home}" class="buttonLeftCancel">Cancel</a>
+                        </div>
+                    </footer>
+                </fieldset>
+            </div>
+        </form>
+
+    </div>
+</div>
+</body>
+<div th:replace="fragments/footer :: footer"/>
+</html>
